@@ -1,16 +1,101 @@
-# React + Vite
+# HRMS Frontend Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+HRMS Frontend is a responsive dashboard built using React that visualizes attendance analytics and connects with the FastAPI backend.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Live App
 
-## React Compiler
+Production URL: https://hrms-frontend-i74w.onrender.com/
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- React.js
+- Axios
+- Tailwind CSS
+- Recharts
+- Render (Deployment)
+
+---
+
+## Project Structure
+
+```
+frontend/
+│
+├── src/
+│   ├── components/
+│   ├── pages/
+│   ├── services/
+│   ├── App.js
+│
+├── package.json
+└── public/
+```
+
+---
+
+## Setup Locally
+
+### 1. Clone Repo
+
+```bash
+git clone <your-frontend-repo-url>
+cd frontend
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Start Development Server
+
+```bash
+npm start
+```
+
+Runs on: http://localhost:3000
+
+---
+
+## Backend Integration
+
+Backend Base URL:
+
+```
+https://hrms-backend-lj2z.onrender.com
+```
+
+Example API Call:
+
+```js
+axios.get("/attendance/weekly")
+```
+
+---
+
+## Features
+
+- Weekly Attendance Analytics
+- Present Percentage Calculation
+- Dynamic Chart Visualization
+- Responsive UI
+- Live API Integration
+
+---
+
+## Deployment
+
+Hosted on Render.
+
+Production URL: https://hrms-frontend-i74w.onrender.com/
+
+---
+
+## Demo Video
+
+https://www.awesomescreenshot.com/video/49601085?key=bc4923ab9554e7f94a1be1242177df48
