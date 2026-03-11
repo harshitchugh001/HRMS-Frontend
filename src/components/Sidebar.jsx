@@ -1,10 +1,18 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { LayoutDashboard, LogOut, ShieldCheck, Menu, ChevronRight } from "lucide-react";
+import { LayoutDashboard, LogOut, ShieldCheck, Menu, ChevronRight, BarChart3, FileText, X } from "lucide-react";
 
 const NAV_CONFIG = {
-  admin:    [{ label: "Dashboard", icon: LayoutDashboard, path: "/dashboard" }],
-  manager:  [{ label: "Dashboard", icon: LayoutDashboard, path: "/dashboard" }],
+  admin:    [
+    { label: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
+    { label: "Reports", icon: BarChart3, path: "/reports" },
+    { label: "Leave Management", icon: FileText, path: "/leaves" }
+  ],
+  manager:  [
+    { label: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
+    { label: "Reports", icon: BarChart3, path: "/reports" },
+    { label: "Leave Management", icon: FileText, path: "/leaves" }
+  ],
   employee: [{ label: "Dashboard", icon: LayoutDashboard, path: "/dashboard" }],
 };
 
@@ -29,7 +37,8 @@ const ROLE_DOT_COLORS = {
 const Sidebar = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const user = JSON.parse(localStorage.getItem("user") || "{}");
 
@@ -46,15 +55,30 @@ const Sidebar = ({ children }) => {
     navigate("/");
   };
 
+  const handleNavClick = () => {
+    setMobileOpen(false);
+  };
+
   return (
     <div className="flex min-h-screen bg-[#070d1a]">
 
+      {/* Mobile sidebar overlay */}
+      {mobileOpen && (
+        <div
+          className="fixed inset-0 z-30 bg-black/50 lg:hidden"
+          onClick={() => setMobileOpen(false)}
+        />
+      )}
+
       <aside
         className={`
-          ${collapsed ? "w-[72px]" : "w-[240px]"}
+          fixed lg:sticky lg:top-0 left-0 top-0 h-screen
+          z-40 lg:z-auto
+          ${collapsed ? "w-[72px]" : "w-[240px] lg:w-[240px]"}
+          ${!mobileOpen && "hidden lg:flex"}
           bg-[#0c1526] border-r border-white/[0.06]
           flex flex-col flex-shrink-0
-          sticky top-0 h-screen overflow-hidden
+          overflow-hidden
           transition-all duration-250
         `}
       >
@@ -71,20 +95,24 @@ const Sidebar = ({ children }) => {
           </div>
           <button
             onClick={() => setCollapsed((c) => !c)}
-            className="bg-white/5 border border-white/[0.08] rounded-lg p-1.5 text-white/40 cursor-pointer flex flex-shrink-0"
+            className="hidden lg:flex bg-white/5 border border-white/[0.08] rounded-lg p-1.5 text-white/40 cursor-pointer flex-shrink-0"
           >
             {collapsed ? <ChevronRight size={16} /> : <Menu size={16} />}
           </button>
+          <button
+            onClick={() => setMobileOpen(false)}
+            className="lg:hidden text-white/40"
+          >
+            <X size={20} />
+          </button>
         </div>
 
-        {!collapsed && (
-          <div className="flex items-center gap-2 px-5 py-3 border-b border-white/[0.04]">
+        {!collapsed && <div className="flex items-center gap-2 px-5 py-3 border-b border-white/[0.04]">
             <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${roleDot}`} />
             <span className={`text-[11px] font-semibold tracking-[0.8px] uppercase ${roleColor}`}>
               {roleLabel}
             </span>
-          </div>
-        )}
+          </div>}
 
         <nav className="flex-1 px-[10px] py-4 flex flex-col gap-0.5 overflow-y-auto">
           {navItems.map((item) => {
@@ -92,7 +120,10 @@ const Sidebar = ({ children }) => {
             return (
               <button
                 key={item.path}
-                onClick={() => navigate(item.path)}
+                onClick={() => {
+                  navigate(item.path);
+                  handleNavClick();
+                }}
                 title={collapsed ? item.label : ""}
                 className={`
                   flex items-center gap-[10px] px-3 py-[10px] rounded-lg
@@ -146,8 +177,25 @@ const Sidebar = ({ children }) => {
         </div>
       </aside>
 
-      <main className="flex-1 overflow-y-auto min-h-screen">
-        {children}
+      <main className="flex-1 flex flex-col min-h-screen overflow-hidden">
+        {/* Mobile header with menu button */}
+        <div className="lg:hidden bg-[#0c1526] border-b border-white/[0.06] px-4 py-3 flex items-center gap-3">
+          <button
+            onClick={() => setMobileOpen(true)}
+            className="bg-white/5 border border-white/[0.08] rounded-lg p-2 text-white/40 cursor-pointer"
+          >
+            <Menu size={20} />
+          </button>
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 bg-emerald-500/10 border border-emerald-500/15 rounded-[8px] flex items-center justify-center flex-shrink-0">
+              <ShieldCheck size={16} className="text-emerald-400" strokeWidth={1.5} />
+            </div>
+            <span className="text-[14px] font-semibold text-slate-100 tracking-tight">HRMS Lite</span>
+          </div>
+        </div>
+        <div className="flex-1 overflow-y-auto">
+          {children}
+        </div>
       </main>
     </div>
   );
