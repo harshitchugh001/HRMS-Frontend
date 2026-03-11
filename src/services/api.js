@@ -1,5 +1,5 @@
-// const BASE_URL = "https://hrms-backend-lj2z.onrender.com";
-const BASE_URL = "http://localhost:8000";
+const BASE_URL = "https://hrms-backend-lj2z.onrender.com";
+// const BASE_URL = "http://localhost:8000";
 
 
 const authHeader = () => {
